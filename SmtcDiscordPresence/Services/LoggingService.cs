@@ -33,6 +33,18 @@ namespace SmtcDiscordPresence.Services
             }
         }
 
+        /// <summary>
+        /// Clear the log buffer on application start
+        /// </summary>
+        public static void Clear()
+        {
+            lock (_lock)
+            {
+                _logBuffer.Clear();
+                WriteLine("=== DEBUG LOG CLEARED - APPLICATION STARTING ===");
+            }
+        }
+
         public static void ShowLogWindow()
         {
             if (_logWindow != null && !_logWindow.IsDisposed)

@@ -19,6 +19,8 @@ namespace SmtcDiscordPresence
 
         public TrayContext()
         {            
+            // Clear the debug log at application start
+            DebugLogger.Clear();
             DebugLogger.WriteLine("[TrayContext] Starting TrayContext initialization...");
             
             try
@@ -129,7 +131,57 @@ namespace SmtcDiscordPresence
                 }
                 else
                 {
-                    DebugLogger.WriteLine($"[TrayContext] Got media snapshot - sending to Discord: '{snap.Title}' by '{snap.Artist}'");
+                    var typeIcon = snap.Type switch
+                    {
+                        MediaType.Audio => snap.AudioSource switch
+                        {
+                            AudioSourceType.YouTubeMusic => "🎵🔴",
+                            AudioSourceType.Spotify => "🎵🟢",
+                            AudioSourceType.Generic => "🎵🌐",
+                            AudioSourceType.LocalAudio => "🎵💾",
+                            _ => "🎵"
+                        },
+                        MediaType.Video => snap.VideoSource switch
+                        {
+                            VideoSourceType.YouTube => "📺🔴",
+                            VideoSourceType.Netflix => "📺🎬",
+                            VideoSourceType.Twitch => "📺💜",
+                            VideoSourceType.PrimeVideo => "📺📦",
+                            VideoSourceType.Hulu => "📺🟢",
+                            VideoSourceType.Disney => "📺🏰",
+                            VideoSourceType.LocalVideo => "📺💾",
+                            VideoSourceType.Generic => "📺🌐",
+                            _ => "📺"
+                        },
+                        _ => "❓"
+                    };
+                    
+                    var sourceDescription = snap.Type switch
+                    {
+                        MediaType.Audio when snap.AudioSource != AudioSourceType.Unknown => $"{snap.Type}/{snap.AudioSource}",
+                        MediaType.Video when snap.VideoSource != VideoSourceType.Unknown => $"{snap.Type}/{snap.VideoSource}",
+                        _ => snap.Type.ToString()
+                    };
+                        
+                    DebugLogger.WriteLine($"[TrayContext] Got {sourceDescription} snapshot {typeIcon} - sending to Discord:");
+                    DebugLogger.WriteLine($"[TrayContext]   Title: '{snap.Title}'");
+                    DebugLogger.WriteLine($"[TrayContext]   Artist: '{snap.Artist}'");
+                    DebugLogger.WriteLine($"[TrayContext]   Source: {snap.SourceApp}");
+                    DebugLogger.WriteLine($"[TrayContext]   Type: {snap.Type}");
+                    
+                    if (snap.Type == MediaType.Video)
+                    {
+                        DebugLogger.WriteLine($"[TrayContext]   VideoSource: {snap.VideoSource}");
+                    }
+                    else if (snap.Type == MediaType.Audio)
+                    {
+                        DebugLogger.WriteLine($"[TrayContext]   AudioSource: {snap.AudioSource}");
+                    }
+                    
+                    if (!string.IsNullOrEmpty(snap.WebsiteUrl))
+                    {
+                        DebugLogger.WriteLine($"[TrayContext]   WebsiteUrl: {snap.WebsiteUrl}");
+                    }
                 }
                 
                 await _discord.SetPresenceAsync(snap);
