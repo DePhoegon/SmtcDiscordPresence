@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
+	  <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="..\appsettings.secrets.json" Condition="Exists('..\appsettings.secrets.json')">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>appsettings.secrets.json</Link>
+		</None>
+	</ItemGroup>
+</Project>
