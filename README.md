@@ -17,7 +17,7 @@ A Windows application that displays currently playing media information as Disco
    ```json
    {
      "Discord": {
-       "ClientId": "YOUR_DISCORD_CLIENT_ID_HERE"
+       "ClientId": "YOUR_DISCORD_App_ID_HERE"
      }
    }
    ```
@@ -28,7 +28,7 @@ A Windows application that displays currently playing media information as Disco
    ```json
    {
      "Discord": {
-       "ClientId": "YOUR_DISCORD_CLIENT_ID_HERE"
+       "ClientId": "YOUR_DISCORD_App_ID_HERE"
      },
      "Settings": {
        "UpdateIntervalSeconds": 10,
